@@ -76,6 +76,10 @@ public class StationsConstant {
         return null;
     }
 
+    /*
+    this method return all the items in a enum class as a string array
+     */
+
     public static String[] getNames(Class<? extends Enum<?>> e) {
         return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
     }

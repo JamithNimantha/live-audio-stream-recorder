@@ -59,7 +59,7 @@ public class HomeController implements Initializable {
 
     @FXML
     void cmbStationsOnAction(ActionEvent event) {
-        System.out.println(StationsConstant.getStationUrl(cmbStations.getSelectionModel().getSelectedItem()));
+//        System.out.println(StationsConstant.getStationUrl(cmbStations.getSelectionModel().getSelectedItem()));
     }
 
 
@@ -145,7 +145,7 @@ public class HomeController implements Initializable {
         if (selectedDirectory == null) {
             //No Directory selected
         } else {
-            System.out.println(selectedDirectory.getAbsolutePath());
+//            System.out.println(selectedDirectory.getAbsolutePath());
             txtPath.setText(dirPath);
 
         }

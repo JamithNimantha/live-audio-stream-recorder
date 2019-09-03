@@ -34,9 +34,9 @@ public class StreamDownloader extends TimerTask {
         //add request header
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + chunkUrl);
-        System.out.println("Response Code : " + responseCode);
+//        int responseCode = con.getResponseCode();
+//        System.out.println("\nSending 'GET' request to URL : " + chunkUrl);
+//        System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -52,12 +52,12 @@ public class StreamDownloader extends TimerTask {
         String[] split = response.toString().split(",");
         String param = split[3].split("#")[0];
 
-        System.out.println(response.toString());
+//        System.out.println(response.toString());
 
         try{
             URLConnection conn = new URL(stationUrl+param).openConnection();
             InputStream is = conn.getInputStream();
-            System.out.println(dirPath+"/"+fileName+".mp3");
+//            System.out.println(dirPath+"/"+fileName+".mp3");
             OutputStream outstream = new FileOutputStream(new File(dirPath+"/"+fileName+".mp3"),true);
             byte[] buffer = new byte[4096];
             int len;
