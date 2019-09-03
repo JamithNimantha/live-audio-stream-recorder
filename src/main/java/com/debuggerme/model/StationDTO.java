@@ -2,7 +2,7 @@ package com.debuggerme.model;
 
 import javafx.scene.control.Button;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Timer;
 
 public class StationDTO {
@@ -10,7 +10,7 @@ public class StationDTO {
     private Timer timer;
     private String station;
     private String fileName;
-    private LocalDate startedTime;
+    private LocalTime startedTime;
     private String status;
     private String location;
     private Button action;
@@ -40,11 +40,11 @@ public class StationDTO {
         this.fileName = fileName;
     }
 
-    public LocalDate getStartedTime() {
+    public LocalTime getStartedTime() {
         return startedTime;
     }
 
-    public void setStartedTime(LocalDate startedTime) {
+    public void setStartedTime(LocalTime startedTime) {
         this.startedTime = startedTime;
     }
 

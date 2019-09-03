@@ -13,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -20,10 +22,8 @@ import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -77,24 +77,24 @@ public class HomeController implements Initializable {
                 dto.setTimer(timer);
                 dto.setStation(cmbStations.getSelectionModel().getSelectedItem());
                 dto.setFileName(fileName);
-                dto.setStartedTime(LocalDate.now());
+                dto.setStartedTime(LocalTime.now().withNano(0));
                 dto.setStatus("Recording");
                 dto.setLocation(dirPath);
 
                 Button btnOpen = new Button();
                 btnOpen.setStyle("-fx-background-color: #79a463");
-                btnOpen.setText("View");
+                btnOpen.setGraphic(new ImageView(new Image("/images/icons8-preview-pane-15.png")));
 
                 Button btnAction = new Button();
                 btnAction.setStyle("-fx-background-color: #a43414");
-                btnAction.setText("Stop");
+                btnAction.setGraphic(new ImageView(new Image("/images/icons8-stop-15.png")));
 
                 dto.setOpen(btnOpen);
                 dto.setAction(btnAction);
 
                 dto.getAction().setOnAction(event1 -> {
                     dto.getTimer().cancel();
-                    dto.getAction().setText("Play");
+                    dto.setTimer(null);
                     dto.setStatus("Stopped");
                     dto.getAction().setDisable(true);
 
@@ -122,6 +122,7 @@ public class HomeController implements Initializable {
                     }
                 });
 
+                txtFileName.clear();
                 tblList.getItems().add(dto);
 
         }else {
@@ -153,6 +154,10 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        btnRecordon.setGraphic(new ImageView(new Image("/images/icons8-video-record-24.png")));
+        btnPath.setGraphic(new ImageView(new Image("/images/icons8-folder-24.png")));
+
         String[] stations = StationsConstant.getNames(Stations.class);
         cmbStations.getItems().addAll(stations);
 

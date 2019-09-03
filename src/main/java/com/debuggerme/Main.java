@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class Main extends Application {
         Scene temp = new Scene(parent);
         primaryStage.setScene(temp);
         primaryStage.resizableProperty().setValue(Boolean.FALSE);
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icons8-record-100.png")));
 
         primaryStage.show();
 
