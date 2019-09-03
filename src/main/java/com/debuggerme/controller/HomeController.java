@@ -105,6 +105,10 @@ public class HomeController implements Initializable {
                 });
 
                 dto.getOpen().setOnAction(event1 -> {
+
+                    /*
+                   * if you are using linux mint use this otherwise it will not work(It will crash the programe)
+                   *
                     BasicThreadFactory factory = new BasicThreadFactory.Builder()
                             .namingPattern("YourPatternIndeficator")
                             .build();
@@ -120,6 +124,12 @@ public class HomeController implements Initializable {
                         });
 
                     }
+                      */
+                            try {
+                                Desktop.getDesktop().open(new File(dto.getLocation()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                 });
 
                 txtFileName.clear();
