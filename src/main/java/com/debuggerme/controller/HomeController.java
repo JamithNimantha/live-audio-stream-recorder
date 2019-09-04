@@ -93,27 +93,39 @@ public class HomeController implements Initializable {
             btnOpen.setTooltip(open);
 
             Button btnAction = new Button();
-            btnAction.setStyle("-fx-background-color: #a43414;-fx-cursor: hand");
-            btnAction.setGraphic(new ImageView(new Image("/images/icons8-stop-15.png")));
+            btnAction.setStyle("-fx-background-color: #db2a10;-fx-cursor: hand");
+            btnAction.setGraphic(new ImageView(new Image("images/icons8-stop-15.png")));
+
+
+            Button btnRemove = new Button();
+            btnRemove.setStyle("-fx-background-color: #db790e;-fx-cursor: hand");
+            btnRemove.setGraphic(new ImageView(new Image("/images/icons8-cancel-15.png")));
+
+            btnRemove.setDisable(true);
 
             Tooltip stop = new Tooltip();
             stop.setText("click to stop recording");
             btnAction.setTooltip(stop);
 
+            Tooltip remove = new Tooltip();
+            remove.setText("click to remove");
+            btnRemove.setTooltip(remove);
+
+
+
+
+            dto.setRemove(btnRemove);
             dto.setOpen(btnOpen);
             dto.setAction(btnAction);
 
-            Timeline time = new Timeline(new KeyFrame(Duration.seconds(10), new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    dto.setSize(new DecimalFormat("0.00").format(
-                            new File(dirPath+"/"+fileName+".mp3").length()/ (1024.0f * 1024.0f)));
-                    ObservableList<StationDTO> items = tblList.getItems();
-                    List<StationDTO> ss = new ArrayList<>(items);
-                    items.clear();
-                    tblList.getItems().addAll(FXCollections.observableArrayList(ss));
+            Timeline time = new Timeline(new KeyFrame(Duration.seconds(10), event12 -> {
+                dto.setSize(new DecimalFormat("0.00").format(
+                        new File(dirPath+"/"+fileName+".mp3").length()/ (1024.0f * 1024.0f)));
+                ObservableList<StationDTO> items = tblList.getItems();
+                List<StationDTO> ss = new ArrayList<>(items);
+                items.clear();
+                tblList.getItems().addAll(FXCollections.observableArrayList(ss));
 
-                }
             }), new KeyFrame(Duration.seconds(10)));
             time.setCycleCount(Animation.INDEFINITE);
             time.play();
@@ -126,6 +138,7 @@ public class HomeController implements Initializable {
                 dto.setStatus("Stopped");
                 dto.setEndTime(LocalTime.now().withNano(0));
                 dto.getAction().setDisable(true);
+                dto.getRemove().setDisable(false);
                 dto.getTimeline().stop();
 
                 ObservableList<StationDTO> items = tblList.getItems();
@@ -160,6 +173,10 @@ public class HomeController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            });
+
+            dto.getRemove().setOnAction(event1 -> {
+                tblList.getItems().remove(dto);
             });
 
             txtFileName.clear();
@@ -210,6 +227,7 @@ public class HomeController implements Initializable {
         tblList.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("status"));
         tblList.getColumns().get(7).setCellValueFactory(new PropertyValueFactory<>("action"));
         tblList.getColumns().get(8).setCellValueFactory(new PropertyValueFactory<>("open"));
+        tblList.getColumns().get(9).setCellValueFactory(new PropertyValueFactory<>("remove"));
 
     }
 }

@@ -54,9 +54,10 @@
             <TableColumn prefWidth="74.0" text="Start" />
             <TableColumn prefWidth="74.0" text="End" />
             <TableColumn prefWidth="79.0" style="-fx-alignment: center;" text="Size(MB)" />
-            <TableColumn prefWidth="92.0" text="Status" />
-            <TableColumn prefWidth="48.0" style="-fx-alignment: center;" text="#" />
-            <TableColumn prefWidth="42.0" style="-fx-alignment: center;" text="#" />
+            <TableColumn prefWidth="79.0" text="Status" />
+            <TableColumn prefWidth="35.0" style="-fx-alignment: center;" text="#" />
+            <TableColumn prefWidth="35.0" style="-fx-alignment: center;" text="#" />
+            <TableColumn prefWidth="35.0" style="-fx-alignment: center;" text="#" />
         </columns>
       </TableView>
       <ImageView fitHeight="140.0" fitWidth="130.0" layoutX="856.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">

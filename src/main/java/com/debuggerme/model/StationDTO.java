@@ -18,7 +18,16 @@ public class StationDTO {
     private String location;
     private Button action;
     private Button open;
+    private Button remove;
     private Timeline timeline;
+
+    public Button getRemove() {
+        return remove;
+    }
+
+    public void setRemove(Button remove) {
+        this.remove = remove;
+    }
 
     public String getSize() {
         return size;
