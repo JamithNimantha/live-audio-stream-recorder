@@ -84,15 +84,16 @@ public class HomeController implements Initializable {
             dto.setLocation(dirPath);
 
             Button btnOpen = new Button();
-            btnOpen.setStyle("-fx-background-color: #79a463");
+            btnOpen.setStyle("-fx-background-color: #79a463;-fx-cursor: hand");
             btnOpen.setGraphic(new ImageView(new Image("/images/icons8-preview-pane-15.png")));
+
 
             Tooltip open = new Tooltip();
             open.setText("click to open folder");
             btnOpen.setTooltip(open);
 
             Button btnAction = new Button();
-            btnAction.setStyle("-fx-background-color: #a43414");
+            btnAction.setStyle("-fx-background-color: #a43414;-fx-cursor: hand");
             btnAction.setGraphic(new ImageView(new Image("/images/icons8-stop-15.png")));
 
             Tooltip stop = new Tooltip();
