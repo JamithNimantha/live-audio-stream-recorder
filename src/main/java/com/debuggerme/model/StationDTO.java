@@ -1,5 +1,6 @@
 package com.debuggerme.model;
 
+import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 
 import java.time.LocalTime;
@@ -11,10 +12,37 @@ public class StationDTO {
     private String station;
     private String fileName;
     private LocalTime startedTime;
+    private LocalTime endTime;
+    private String size;
     private String status;
     private String location;
     private Button action;
     private Button open;
+    private Timeline timeline;
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Timeline getTimeline() {
+        return timeline;
+    }
+
+    public void setTimeline(Timeline timeline) {
+        this.timeline = timeline;
+    }
 
     public Timer getTimer() {
         return timer;

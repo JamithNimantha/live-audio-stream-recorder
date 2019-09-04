@@ -4,32 +4,35 @@ import com.debuggerme.model.StationDTO;
 import com.debuggerme.util.Stations;
 import com.debuggerme.util.StationsConstant;
 import com.debuggerme.util.StreamDownloader;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HomeController implements Initializable {
 
@@ -63,48 +66,74 @@ public class HomeController implements Initializable {
     }
 
 
-
     @FXML
     void btnRecordonAction(ActionEvent event) throws IOException {
-        if (dirPath!=null && cmbStations.getSelectionModel().getSelectedItem()!=null && !txtFileName.getText().isEmpty())  {
-                Timer timer = new Timer();
-                String fileName = txtFileName.getText();
-                String stationUrl = StationsConstant.getStationUrl(cmbStations.getSelectionModel().getSelectedItem());
-                String chunkUrl = StationsConstant.getChunkUrl(cmbStations.getSelectionModel().getSelectedItem());
-                timer.schedule(new StreamDownloader(chunkUrl,stationUrl,dirPath,fileName), 0, 10000);
+        if (dirPath != null && cmbStations.getSelectionModel().getSelectedItem() != null && !txtFileName.getText().isEmpty()) {
+            Timer timer = new Timer();
+            String fileName = txtFileName.getText();
+            String stationUrl = StationsConstant.getStationUrl(cmbStations.getSelectionModel().getSelectedItem());
+            String chunkUrl = StationsConstant.getChunkUrl(cmbStations.getSelectionModel().getSelectedItem());
+            timer.schedule(new StreamDownloader(chunkUrl, stationUrl, dirPath, fileName), 0, 10000);
 
-                StationDTO dto = new StationDTO();
-                dto.setTimer(timer);
-                dto.setStation(cmbStations.getSelectionModel().getSelectedItem());
-                dto.setFileName(fileName);
-                dto.setStartedTime(LocalTime.now().withNano(0));
-                dto.setStatus("Recording");
-                dto.setLocation(dirPath);
+            StationDTO dto = new StationDTO();
+            dto.setTimer(timer);
+            dto.setStation(cmbStations.getSelectionModel().getSelectedItem());
+            dto.setFileName(fileName);
+            dto.setStartedTime(LocalTime.now().withNano(0));
+            dto.setStatus("Recording");
+            dto.setLocation(dirPath);
 
-                Button btnOpen = new Button();
-                btnOpen.setStyle("-fx-background-color: #79a463");
-                btnOpen.setGraphic(new ImageView(new Image("/images/icons8-preview-pane-15.png")));
+            Button btnOpen = new Button();
+            btnOpen.setStyle("-fx-background-color: #79a463");
+            btnOpen.setGraphic(new ImageView(new Image("/images/icons8-preview-pane-15.png")));
 
-                Button btnAction = new Button();
-                btnAction.setStyle("-fx-background-color: #a43414");
-                btnAction.setGraphic(new ImageView(new Image("/images/icons8-stop-15.png")));
+            Tooltip open = new Tooltip();
+            open.setText("click to open folder");
+            btnOpen.setTooltip(open);
 
-                dto.setOpen(btnOpen);
-                dto.setAction(btnAction);
+            Button btnAction = new Button();
+            btnAction.setStyle("-fx-background-color: #a43414");
+            btnAction.setGraphic(new ImageView(new Image("/images/icons8-stop-15.png")));
 
-                dto.getAction().setOnAction(event1 -> {
-                    dto.getTimer().cancel();
-                    dto.setTimer(null);
-                    dto.setStatus("Stopped");
-                    dto.getAction().setDisable(true);
+            Tooltip stop = new Tooltip();
+            stop.setText("click to stop recording");
+            btnAction.setTooltip(stop);
 
+            dto.setOpen(btnOpen);
+            dto.setAction(btnAction);
+
+            Timeline time = new Timeline(new KeyFrame(Duration.seconds(10), new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    dto.setSize(new DecimalFormat("0.00").format(
+                            new File(dirPath+"/"+fileName+".mp3").length()/ (1024.0f * 1024.0f)));
                     ObservableList<StationDTO> items = tblList.getItems();
                     List<StationDTO> ss = new ArrayList<>(items);
                     items.clear();
                     tblList.getItems().addAll(FXCollections.observableArrayList(ss));
-                });
 
-                dto.getOpen().setOnAction(event1 -> {
+                }
+            }), new KeyFrame(Duration.seconds(10)));
+            time.setCycleCount(Animation.INDEFINITE);
+            time.play();
+
+            dto.setTimeline(time);
+
+            dto.getAction().setOnAction(event1 -> {
+                dto.getTimer().cancel();
+                dto.setTimer(null);
+                dto.setStatus("Stopped");
+                dto.setEndTime(LocalTime.now().withNano(0));
+                dto.getAction().setDisable(true);
+                dto.getTimeline().stop();
+
+                ObservableList<StationDTO> items = tblList.getItems();
+                List<StationDTO> ss = new ArrayList<>(items);
+                items.clear();
+                tblList.getItems().addAll(FXCollections.observableArrayList(ss));
+            });
+
+            dto.getOpen().setOnAction(event1 -> {
 
                     /*
                    * if you are using linux mint use this otherwise it will not work(It will crash the programe)
@@ -125,17 +154,17 @@ public class HomeController implements Initializable {
 
                     }
                       */
-                            try {
-                                Desktop.getDesktop().open(new File(dto.getLocation()));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                });
+                try {
+                    Desktop.getDesktop().open(new File(dto.getLocation()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
 
-                txtFileName.clear();
-                tblList.getItems().add(dto);
+            txtFileName.clear();
+            tblList.getItems().add(dto);
 
-        }else {
+        } else {
             Alert a = new Alert(Alert.AlertType.ERROR, "Error Occurred !!", ButtonType.OK);
             a.setHeaderText(null);
             a.setContentText("Please Use Valid Station, Save Location or File Name !!!");
@@ -172,12 +201,14 @@ public class HomeController implements Initializable {
         cmbStations.getItems().addAll(stations);
 
         tblList.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("station"));
-        tblList.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("fileName"));
-        tblList.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startedTime"));
-        tblList.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("status"));
-        tblList.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("location"));
-        tblList.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("action"));
-        tblList.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("open"));
+        tblList.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("location"));
+        tblList.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("fileName"));
+        tblList.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("startedTime"));
+        tblList.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        tblList.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("size"));
+        tblList.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("status"));
+        tblList.getColumns().get(7).setCellValueFactory(new PropertyValueFactory<>("action"));
+        tblList.getColumns().get(8).setCellValueFactory(new PropertyValueFactory<>("open"));
 
     }
 }

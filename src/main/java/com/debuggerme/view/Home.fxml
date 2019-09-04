@@ -6,25 +6,35 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="527.0" prefWidth="973.0" style="-fx-background-color: #2e3236;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.debuggerme.controller.HomeController">
+<AnchorPane prefHeight="527.0" prefWidth="1004.0" style="-fx-background-color: #2e3236;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.debuggerme.controller.HomeController">
    <children>
-      <ComboBox fx:id="cmbStations" layoutX="202.0" layoutY="24.0" onAction="#cmbStationsOnAction" prefHeight="26.0" prefWidth="260.0" />
+      <ComboBox fx:id="cmbStations" layoutX="202.0" layoutY="24.0" onAction="#cmbStationsOnAction" prefHeight="26.0" prefWidth="260.0">
+         <tooltip>
+            <Tooltip text="select a radio station" />
+         </tooltip></ComboBox>
       <Button fx:id="btnPath" layoutX="47.0" layoutY="114.0" mnemonicParsing="false" onAction="#onBtnPathOnAction" prefHeight="26.0" prefWidth="118.0" text="Location">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
+         <tooltip>
+            <Tooltip text="select a location to save" />
+         </tooltip>
       </Button>
       <Button fx:id="btnRecordon" layoutX="697.0" layoutY="105.0" mnemonicParsing="false" onAction="#btnRecordonAction" prefHeight="35.0" prefWidth="118.0" text="Record">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
+         <tooltip>
+            <Tooltip text="start recording" />
+         </tooltip>
       </Button>
-      <TextField fx:id="txtPath" layoutX="203.0" layoutY="116.0" prefHeight="26.0" prefWidth="464.0" />
+      <TextField fx:id="txtPath" editable="false" layoutX="203.0" layoutY="116.0" prefHeight="26.0" prefWidth="464.0" />
       <TextField fx:id="txtFileName" layoutX="202.0" layoutY="73.0" prefHeight="26.0" prefWidth="260.0" />
       <Label layoutX="56.0" layoutY="29.0" prefHeight="26.0" prefWidth="130.0" text="Stations         :" textFill="WHITE">
          <font>
@@ -36,18 +46,20 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TableView fx:id="tblList" layoutX="6.0" layoutY="168.0" prefHeight="354.0" prefWidth="963.0">
+      <TableView fx:id="tblList" layoutX="6.0" layoutY="168.0" prefHeight="354.0" prefWidth="995.0">
         <columns>
-          <TableColumn prefWidth="185.0" text="Station" />
-          <TableColumn prefWidth="151.0" text="File Name" />
-            <TableColumn prefWidth="87.0" text="Started At" />
-            <TableColumn prefWidth="79.0" text="Status" />
-            <TableColumn prefWidth="354.0" text="Location" />
-            <TableColumn prefWidth="54.0" style="-fx-alignment: center;" text="#" />
-            <TableColumn prefWidth="51.0" style="-fx-alignment: center;" text="#" />
+          <TableColumn prefWidth="174.0" text="Station" />
+            <TableColumn prefWidth="284.0" text="Location" />
+          <TableColumn prefWidth="127.0" text="File Name" />
+            <TableColumn prefWidth="74.0" text="Start" />
+            <TableColumn prefWidth="74.0" text="End" />
+            <TableColumn prefWidth="79.0" style="-fx-alignment: center;" text="Size(MB)" />
+            <TableColumn prefWidth="92.0" text="Status" />
+            <TableColumn prefWidth="48.0" style="-fx-alignment: center;" text="#" />
+            <TableColumn prefWidth="42.0" style="-fx-alignment: center;" text="#" />
         </columns>
       </TableView>
-      <ImageView fitHeight="113.0" fitWidth="130.0" layoutX="828.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="140.0" fitWidth="130.0" layoutX="856.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@/images/logo.png" />
          </image>
